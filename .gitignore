@@ -16,3 +16,6 @@ public/registerSW.js
 .vscode/*
 !.vscode/extensions.json
 .idea
+
+# local Claude Code tooling
+.claude/
