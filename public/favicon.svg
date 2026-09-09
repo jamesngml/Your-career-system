@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Your Career System">
+  <rect width="512" height="512" fill="#1B3A5C"/>
+  <g fill="#FFE599">
+    <rect x="82"  y="140" width="348" height="58" rx="29"/>
+    <rect x="82"  y="227" width="250" height="58" rx="29"/>
+    <rect x="82"  y="314" width="152" height="58" rx="29"/>
+  </g>
+</svg>

@@ -1,0 +1,48 @@
+{
+  "name": "your-career-system",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "A polished PWA companion to the High Performer Blueprint: look up your situation, find the tool, open the page.",
+  "scripts": {
+    "dev": "vite --open",
+    "build": "tsc -p tsconfig.app.json && tsc -p tsconfig.node.json && vite build",
+    "preview": "vite preview --open",
+    "serve": "npm run build && vite preview --open",
+    "typecheck": "tsc -p tsconfig.app.json && tsc -p tsconfig.node.json",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "validate": "node scripts/validate-content.mjs",
+    "icons": "powershell -ExecutionPolicy Bypass -File scripts/generate-icons.ps1"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.5.0",
+    "@testing-library/react": "^16.0.1",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/node": "^20.16.5",
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "@eslint/js": "^9.10.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "eslint": "^9.10.0",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-refresh": "^0.4.11",
+    "typescript-eslint": "^8.5.0",
+    "jsdom": "^25.0.0",
+    "typescript": "^5.6.2",
+    "vite": "^5.4.5",
+    "vite-plugin-pwa": "^0.20.5",
+    "vitest": "^2.1.1",
+    "workbox-window": "^7.1.0"
+  },
+  "engines": {
+    "node": ">=18.17.0"
+  }
+}

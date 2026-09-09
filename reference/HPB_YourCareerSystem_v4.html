@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your Career System — HPB Reference</title>
+<style>
+:root { color-scheme: light; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Century Gothic', 'CenturyGothic', 'Apple Gothic', 'URW Gothic', sans-serif; background: #FFFFFF; color: #2C2C2C; line-height: 1.5; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+.container { max-width: 960px; margin: 0 auto; padding: 32px 24px 64px; }
+.brand-tag { font-size: 11px; font-weight: 700; letter-spacing: 4px; color: #6B6B6B; text-transform: uppercase; margin-bottom: 12px; }
+h1 { font-size: 30px; font-weight: 700; color: #1A1A1A; margin-bottom: 8px; line-height: 1.15; }
+.tagline { font-size: 15px; color: #6B6B6B; font-style: italic; margin-bottom: 24px; }
+
+/* SEARCH */
+.search-wrap { position: relative; margin-bottom: 16px; }
+.search-input { width: 100%; padding: 14px 18px 14px 50px; font-size: 16px; font-family: inherit; border: 2px solid #D9D9D9; border-radius: 12px; background: #FFFFFF; color: #1A1A1A; transition: border-color 0.15s; }
+.search-input:focus { outline: none; border-color: #1B3A5C; }
+.search-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #6B6B6B; font-size: 20px; pointer-events: none; }
+.clear-btn { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #6B6B6B; font-size: 18px; cursor: pointer; padding: 6px 10px; display: none; }
+.clear-btn.visible { display: block; }
+.search-meta { font-size: 12px; color: #6B6B6B; margin-bottom: 20px; min-height: 18px; }
+
+/* FILTER CHIPS */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+.chip { padding: 8px 16px; border-radius: 999px; border: 1.5px solid #D9D9D9; background: #FFFFFF; color: #1B3A5C; font-size: 13px; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.15s; letter-spacing: 0.5px; }
+.chip:hover { border-color: #1B3A5C; }
+.chip.active { background: #1B3A5C; color: #FFFFFF; border-color: #1B3A5C; }
+.chip .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+
+/* SECTIONS */
+.section { margin-bottom: 32px; }
+.section.hidden { display: none; }
+.section-header { padding: 14px 0 8px; border-top: 4px solid var(--section-color); margin-bottom: 14px; }
+.section-title { font-size: 18px; font-weight: 700; color: #1B3A5C; margin-bottom: 4px; }
+.section-desc { font-size: 12.5px; color: #6B6B6B; font-style: italic; line-height: 1.5; }
+
+/* CARDS */
+.card { background: #F8FAFC; border-left: 5px solid var(--section-color); border-radius: 0 10px 10px 0; padding: 16px 20px 18px; margin-bottom: 12px; transition: opacity 0.15s; }
+.card.hidden { display: none; }
+.situation {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1B3A5C;
+  margin-bottom: 16px;
+  padding: 4px 0 12px;
+  border-bottom: 2px solid var(--section-color);
+  line-height: 1.3;
+  letter-spacing: 0.1px;
+}
+.situation::before {
+  content: "“ ";
+  color: var(--section-color);
+  font-size: 28px;
+  font-weight: 900;
+  vertical-align: -8px;
+  margin-right: 2px;
+  line-height: 0;
+}
+.tool-block { padding: 10px 0 4px; }
+.tool-block + .tool-block { border-top: 1px dashed #D9D9D9; margin-top: 8px; padding-top: 12px; }
+.tool-name { font-size: 13.5px; font-weight: 700; color: #1B3A5C; margin-bottom: 6px; letter-spacing: 0.3px; }
+.tool-name::before { content: "▸ "; color: #D4A437; font-weight: 700; }
+.tool-desc { font-size: 12.5px; color: #2C2C2C; line-height: 1.6; margin-bottom: 10px; }
+.cta { display: inline-block; padding: 8px 14px; background: #1B3A5C; color: #FFE599; font-size: 11.5px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; border-radius: 6px; text-decoration: none; transition: background 0.15s; cursor: default; }
+.cta:hover { background: #0F2640; }
+.cta .arrow { margin-left: 5px; font-size: 13px; }
+
+/* HIGHLIGHT */
+.hl { background: #FFE599; padding: 0 2px; border-radius: 3px; color: #1A1A1A; font-weight: inherit; }
+
+/* NO RESULTS */
+.no-results { padding: 32px 24px; background: #F8FAFC; border-radius: 10px; text-align: center; color: #6B6B6B; font-size: 14px; display: none; }
+.no-results.visible { display: block; }
+.no-results strong { color: #1A1A1A; }
+
+footer.foot { margin-top: 40px; padding-top: 20px; border-top: 1px solid #E2E8F0; font-size: 11px; color: #6B6B6B; text-align: center; }
+
+@media (max-width: 600px) {
+  .container { padding: 24px 16px 48px; }
+  h1 { font-size: 24px; }
+  .tagline { font-size: 14px; }
+  .search-input { font-size: 15px; padding: 12px 14px 12px 44px; }
+  .search-icon { left: 14px; font-size: 18px; }
+  .card { padding: 14px 16px 16px; }
+  .situation { font-size: 16px; }
+  .tool-name { font-size: 12.5px; }
+  .tool-desc { font-size: 12px; }
+  .cta { padding: 7px 12px; font-size: 11px; }
+  .chip { padding: 7px 12px; font-size: 12px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="brand-tag">HPB · High Performer Blueprint</div>
+  <h1>Your Career System</h1>
+  <p class="tagline">Look up your situation. Find the tool. Open the page.</p>
+
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input class="search-input" id="search" placeholder="Search by situation, tool, or keyword — e.g. “new boss” or “priorities”" autocomplete="off">
+    <button class="clear-btn" id="clear-btn" onclick="clearSearch()" aria-label="Clear">✕</button>
+  </div>
+  <div class="search-meta" id="search-meta">45 situations across 5 sections.</div>
+
+  <div class="chips" id="chips">
+    <button class="chip active" data-section="all">All</button>
+    <button class="chip" data-section="1"><span class="dot" style="background:#F4B7B7"></span>Mindset</button>
+    <button class="chip" data-section="2"><span class="dot" style="background:#FFE599"></span>People</button>
+    <button class="chip" data-section="3"><span class="dot" style="background:#C5E1A5"></span>Priorities</button>
+    <button class="chip" data-section="4"><span class="dot" style="background:#BBDEFB"></span>Visibility</button>
+    <button class="chip" data-section="5"><span class="dot" style="background:#D5C5E0"></span>Goals</button>
+  </div>
+
+  <div id="results"></div>
+  <div class="no-results" id="no-results"><strong>No matches.</strong><br>Try a different keyword or click <em>All</em> to reset filters.</div>
+
+  <footer class="foot">Insights Associates Pte Ltd  |  Copyright 2026  |  HPB Module 6 reference</footer>
+</div>
+
+<script>
+// === TOOLS: 22 unique tools with 3-sentence descriptions ===
+const TOOLS = {
+  owner_diag: {
+    name: "Owner Mindset 6-Dimension Self-Diagnostic", module: 1, page: "p3",
+    desc: "A 30-question self-assessment that scores you on the Owner-vs-Employee spectrum across 6 dimensions: Ownership, Focus, Decisions, Value, Time, and Influence. Each dimension carries 5 statements; your scores reveal your default patterns and which dimension needs the deliberate shift. Re-take it at 90 days to measure how your identity has moved."
+  },
+  owner_pillars: {
+    name: "The 3 Owner Mindset Pillars (Reality · Ownership · Growth)", module: 1, page: "p8",
+    desc: "Three pillars that anchor the Owner identity in daily decisions: Reality (see what's actually true, not what you wish), Ownership (it's your career, not your manager's), Growth (every situation is input to your trajectory). Use them as a mental check before reacting to setbacks. The pillars sit underneath the 6-Dimension Self-Diagnostic — they're the why; the diagnostic is the what."
+  },
+  three_circles: {
+    name: "The 3 Circles framework (Have · Influence · Worry)", module: 2, page: "p3",
+    desc: "A visual triage tool that maps every concern into one of three circles: things you Have control over, things you can Influence, and things you can only Worry about. Most stuck professionals spend 80% of their energy in the Worry circle when the inverse is what produces movement. Use it whenever you feel paralysed, frustrated, or stuck on something you can't change."
+  },
+  long_short: {
+    name: "Long Game vs Short Game (5 dimensions)", module: 2, page: "p8",
+    desc: "A 5-dimension lens for telling whether you're playing the Long Game or the Short Game — Time horizon, Risk appetite, Capital invested, Compounding, Visibility of payoff. Most professionals default to the Short Game when stressed (play safe, don't speak up, take the next job for money). Use the dimensions to see exactly where you're shrinking — and what choice would put you back in the Long Game."
+  },
+  three_cs: {
+    name: "The 3Cs framework (Competency · Commitment · Compatibility)", module: 3, page: "p3",
+    desc: "The three dimensions that determine whether you're seen as a Valued Member of the team: Competency (you can do the work), Commitment (you reliably show up), Compatibility (you make others want to work with you). Most stuck professionals over-invest in Competency and ignore Compatibility — which is usually the bottleneck. Use as a frame whenever you feel underappreciated despite delivering good work."
+  },
+  three_cs_assess: {
+    name: "18-question 3Cs Self-Assessment", module: 3, page: "p5",
+    desc: "An 18-item self-assessment that scores you on each of the 3Cs — 6 questions per C, Likert-scored 1-5. The output is your weakest C: the one most likely to be the bottleneck holding you back from Valued Member status. Take it once as a baseline + again every 6 months to track your shift."
+  },
+  first_one_on_one: {
+    name: "First 1:1 model script (Scenario C)", module: 3, page: "p7",
+    desc: "A scripted approach for the first 1:1 with a new manager or new skip-level: questions to ask THEM about their priorities and style, things to share about YOU and how you work, the cadence to propose. Sets up the relationship intentionally — you driving, not waiting. Use whenever someone new enters your reporting chain."
+  },
+  comp_peer_pushback: {
+    name: "Compatibility role-play — Senior Pushback (Scenario B)", module: 3, page: "p6-7",
+    desc: "Scenario B of the 5 Compatibility role-plays: a peer pushes back hard on your decision or proposal, often in front of others. The model conversation shows how to absorb the pushback without becoming defensive or capitulating, and to land a productive next step. Practice with a colleague before you need it — the muscle memory matters when emotions are high."
+  },
+  comp_peer_help: {
+    name: "Compatibility role-play — Peer Help (Scenario A)", module: 3, page: "p6-7",
+    desc: "Scenario A of the 5 Compatibility role-plays: a peer asks for help when you're already overloaded. The model conversation shows how to be helpful AND honest about your bandwidth — without burning the relationship or saying yes to everything. Run it once with a colleague so the words come naturally next time."
+  },
+  comp_decline: {
+    name: "Compatibility role-play — Declining Without Burning (Scenario D)", module: 3, page: "p6-7",
+    desc: "Scenario D of the 5 Compatibility role-plays: declining a request — from a peer, manager, or stakeholder — without damaging the relationship. The model conversation gives you the language to say no while preserving goodwill, and to offer a small alternative where possible. Practice once; deploy whenever the request is real but the answer is no."
+  },
+  comp_feedback: {
+    name: "Compatibility role-play — Receiving Critical Feedback (Scenario E)", module: 3, page: "p6-7",
+    desc: "Scenario E of the 5 Compatibility role-plays: receiving critical feedback in a way that lands well for both sides. The model conversation shows how to listen without flinching, ask clarifying questions, and close cleanly — so the feedback-giver feels heard and you walk away with something usable. Run it once; deploy whenever feedback is coming."
+  },
+  mgr_audit: {
+    name: "Manager Priority Audit", module: 4, page: "p3",
+    desc: "A short exercise: write down what you THINK your manager's top 3 priorities are this quarter, then verify in your next 1:1. Most professionals are wrong by at least one priority — and that's exactly where misaligned effort lives. Use whenever you have a new manager, after a strategy change, or quarterly as a re-audit."
+  },
+  four_step_prio: {
+    name: "4-Step Prioritization (Eisenhower + Impact-Effort)", module: 4, page: "p5-6",
+    desc: "A 4-step process combining the Eisenhower matrix (urgent × important) with the Impact-Effort grid: (1) dump everything onto a list, (2) Eisenhower-sort, (3) Impact-Effort sort, (4) pick the top 3 for this week. Cuts a 30-item list down to 3 in under 15 minutes. Use any time your task list feels overwhelming or new asks are landing."
+  },
+  pain_value: {
+    name: "Pain Point Value Matrix (4×3)", module: 4, page: "p7-8",
+    desc: "A 4×3 grid that maps your potential work against (a) the 4 types of pain your manager actually feels and (b) the 3 levels of value-add you can deliver. Surfaces where your effort matches your manager's biggest pain points — and where you're working on things that won't move the needle. Use when suggesting a new initiative or finding ways to add real value beyond your role description."
+  },
+  value_ladder: {
+    name: "The Value Ladder (Activity → Output → Outcome → Impact)", module: 5, page: "p3-4",
+    desc: "A 4-rung ladder that converts task language (“I held daily stand-ups”) into business-impact language (“I protected $2.4M of revenue”). Climb the ladder by asking “so what?” at each rung until you hit a number — dollar value, time saved, risk avoided. Use for any email, update, review, or pitch where you need senior leaders to see the impact, not just the activity."
+  },
+  bluf: {
+    name: "BLUF — Bottom-Line-Up-Front", module: 5, page: "p5-6",
+    desc: "A communication discipline: lead with your conclusion or ask in the first sentence, then add supporting context underneath. Reverses the natural narrative order so busy readers get the answer in 30 seconds — and only dig deeper if they need to. Use for any senior email, memo, or briefing where attention is scarce."
+  },
+  weekly_email: {
+    name: "Weekly Email Update template", module: 5, page: "p7",
+    desc: "A Monday-morning email template that takes ~10 minutes to write and gives your manager 60 seconds of visibility into your week: 3 sections, 3 bullets each — last week's wins, this week's priorities, risks and help needed. Builds your appraisal depository asynchronously. The cumulative effect over 12 months beats the annual review."
+  },
+  four_bullet: {
+    name: "4-Bullet Status Update Framework", module: 5, page: "p6",
+    desc: "A reusable 4-bullet structure for any update to a senior reader: (1) what you asked me to do, (2) what I did, (3) what's at risk, (4) if given more time, I would. Mirrors how busy leaders SCAN updates — top-to-bottom in 30 seconds. Deploy for status reports, briefing notes, monthly reviews, or re-anchoring a senior who has been out of the loop."
+  },
+  one_on_one_anatomy: {
+    name: "1:1 Anatomy + 6 standard scenarios", module: 5, page: "p8-9",
+    desc: "The structure of an excellent 1:1: Before (you bring 3 topics + draft the agenda), During (you drive the conversation + take notes), After (you own the follow-up). 6 standard scenarios cover common 1:1 moments — New Role, Career Growth, Overload, Recovery, Beyond-Role, Reorg. Pick the scenario closest to your moment and adapt the template."
+  },
+  wwhtbt: {
+    name: "WWHTBT — What Would Have to Be True (3 dimensions: You · Boss · Business)", module: 6, page: "p3-4",
+    desc: "A planning framework for any 12-month milestone: list everything that would have to be TRUE across 3 dimensions — YOU (skills/performance), BOSS (advocacy/belief), BUSINESS (org conditions) — for the milestone to land. The BUSINESS dimension is the one that quietly kills most plans (the role doesn't exist; the org isn't ready). Use before committing to any stretch milestone, career conversation, or new role."
+  },
+  one_three_nine: {
+    name: "The 1:3:9 Framework", module: 6, page: "p5-6",
+    desc: "A cascade from milestone to daily action: 1 milestone goal, 3 drivers (Work Performance, Skills, Relationships), 9 actions across daily/weekly/monthly cadences. Translates an abstract milestone into a Monday-morning to-do list. Use as a private OKR equivalent for quarterly personal planning, after a career conversation, or whenever a goal feels too big to start."
+  },
+  pair_commit: {
+    name: "Pair commitment + 30-day check-in", module: 6, page: "p7",
+    desc: "An accountability ritual: pair up with someone in the room, exchange your one commitment, exchange contact info, set a 30-day check-in date. Public commitment effect makes you 2-3× more likely to follow through than private commitments. Use to convert any plan into a sustained action."
+  },
+};
+
+// === SECTIONS ===
+const SECTIONS = {
+  1: { title: "Mindset & Perspective", color: "#F4B7B7",
+       desc: "When your head needs a reset — feeling stuck, passed over, playing safe, or weighing whether to stay or leave" },
+  2: { title: "People & Transitions",  color: "#FFE599",
+       desc: "New boss · new role · new team · cross-functional joins · pushback, declines, and tough feedback" },
+  3: { title: "Priorities & Projects", color: "#C5E1A5",
+       desc: "What to take on · what to drop · new asks · drowning in tasks · suggesting initiatives" },
+  4: { title: "Visibility & Communication", color: "#BBDEFB",
+       desc: "Emails · 1:1s · status updates · reviews · skip-levels · asking for more · recovering from a miss" },
+  5: { title: "Goals & Long Game",     color: "#D5C5E0",
+       desc: "Planning the next 12 months · staying on track · accountability · momentum" },
+};
+
+// === SITUATIONS ===
+const SITUATIONS = [
+  // Section 1 — Mindset & Perspective
+  { section: 1, text: "I'm slipping back into passive Employee mode", tools: ["owner_diag"] },
+  { section: 1, text: "I need to remind myself I'm the CEO of my career", tools: ["owner_pillars"] },
+  { section: 1, text: "I feel my career is happening TO me — I'm waiting for my manager to develop me", tools: ["owner_diag","owner_pillars"] },
+  { section: 1, text: "I just got passed over for promotion or received hard feedback", tools: ["three_circles","long_short"] },
+  { section: 1, text: "I'm stuck on something I cannot change", tools: ["three_circles"] },
+  { section: 1, text: "I keep playing safe at work", tools: ["long_short"] },
+  { section: 1, text: "My company is reorganising or strategy is shifting", tools: ["three_circles","long_short"] },
+  { section: 1, text: "I'm considering whether to stay or leave my role", tools: ["long_short"] },
+
+  // Section 2 — People & Transitions
+  { section: 2, text: "I want to be seen as a valued team member", tools: ["three_cs"] },
+  { section: 2, text: "I want to diagnose my weakest C", tools: ["three_cs_assess"] },
+  { section: 2, text: "A new manager is starting", tools: ["first_one_on_one"] },
+  { section: 2, text: "A new skip-level is starting", tools: ["first_one_on_one","three_cs_assess"] },
+  { section: 2, text: "I've just changed roles (internal lateral or promotion)", tools: ["three_cs_assess","first_one_on_one"] },
+  { section: 2, text: "A peer is pushing back hard on a decision", tools: ["comp_peer_pushback"] },
+  { section: 2, text: "A peer asks for help when I'm already overloaded", tools: ["comp_peer_help"] },
+  { section: 2, text: "I need to decline a request without damaging the relationship", tools: ["comp_decline"] },
+  { section: 2, text: "I'm receiving critical feedback and want to handle it well", tools: ["comp_feedback"] },
+  { section: 2, text: "I'm joining a new cross-functional team or project", tools: ["three_cs","three_cs_assess"] },
+
+  // Section 3 — Priorities & Projects
+  { section: 3, text: "I don't actually know my manager's priorities", tools: ["mgr_audit"] },
+  { section: 3, text: "My boss's strategy or priorities have just changed", tools: ["mgr_audit"] },
+  { section: 3, text: "I am drowning in tasks and need to prioritise", tools: ["four_step_prio"] },
+  { section: 3, text: "I've been asked to take on a new project — should I?", tools: ["four_step_prio","pain_value"] },
+  { section: 3, text: "I'm inheriting a struggling project", tools: ["mgr_audit","three_circles"] },
+  { section: 3, text: "I want to find concrete ways to add value", tools: ["pain_value"] },
+  { section: 3, text: "My boss is overloaded — how do I add real value?", tools: ["pain_value"] },
+  { section: 3, text: "I want to suggest a new initiative", tools: ["pain_value"] },
+  { section: 3, text: "A new quarter or planning cycle is starting", tools: ["mgr_audit","four_step_prio"] },
+
+  // Section 4 — Visibility & Communication
+  { section: 4, text: "I want to talk about my work in business terms", tools: ["value_ladder"] },
+  { section: 4, text: "I need to write a clear email to a senior leader", tools: ["bluf"] },
+  { section: 4, text: "I want to send a useful weekly update to my manager", tools: ["weekly_email"] },
+  { section: 4, text: "I have a 1:1 coming up", tools: ["one_on_one_anatomy"] },
+  { section: 4, text: "I'm giving a quick status report", tools: ["four_bullet"] },
+  { section: 4, text: "Performance review or appraisal is coming up", tools: ["value_ladder","weekly_email"] },
+  { section: 4, text: "Skip-level meeting is coming up", tools: ["four_bullet","value_ladder"] },
+  { section: 4, text: "I'm asking for more scope, a promotion, or a raise", tools: ["value_ladder","one_on_one_anatomy"] },
+  { section: 4, text: "I need to update a stakeholder who's been out of the loop", tools: ["four_bullet"] },
+  { section: 4, text: "I need to recover credibility after a missed commitment", tools: ["bluf","four_bullet","weekly_email"] },
+  { section: 4, text: "I'm leading my first project or chairing a meeting for the first time", tools: ["one_on_one_anatomy","weekly_email"] },
+
+  // Section 5 — Goals & Long Game
+  { section: 5, text: "I have a goal but no clear path", tools: ["wwhtbt"] },
+  { section: 5, text: "I want to build a personal action plan", tools: ["one_three_nine"] },
+  { section: 5, text: "I'm starting a new role or project — what does success look like?", tools: ["wwhtbt"] },
+  { section: 5, text: "I'm setting goals for the new year or fiscal quarter", tools: ["wwhtbt","one_three_nine"] },
+  { section: 5, text: "I had a commitment but lost momentum", tools: ["one_three_nine","pair_commit"] },
+  { section: 5, text: "Mid-year career stocktake — where am I really?", tools: ["wwhtbt","one_three_nine"] },
+  { section: 5, text: "I need an accountability partner", tools: ["pair_commit"] },
+];
+
+// === STATE ===
+let state = { query: "", section: "all" };
+
+// === SYNONYMS for smarter keyword search ===
+// When the user searches for X, the system also checks for each synonym of X.
+// Bidirectional pairs are defined explicitly (e.g. boss↔manager).
+const SYNONYMS = {
+  // People & roles
+  "boss": ["manager", "supervisor", "lead", "leader", "head"],
+  "manager": ["boss", "supervisor", "lead", "leader"],
+  "supervisor": ["boss", "manager", "lead"],
+  "leader": ["boss", "manager", "lead"],
+  "skip-level": ["grandboss", "director", "vp", "skip level", "senior leader"],
+  "skip": ["skip-level", "grandboss", "skip level"],
+  "grandboss": ["skip-level", "director", "senior leader"],
+  "stakeholder": ["partner", "advocate", "sponsor", "ally"],
+  "sponsor": ["advocate", "champion", "stakeholder", "supporter"],
+  "advocate": ["sponsor", "champion", "supporter"],
+  "team": ["colleagues", "peers", "coworkers", "teammates"],
+  "peer": ["colleague", "teammate", "coworker"],
+  "colleague": ["peer", "teammate", "coworker"],
+  "teammate": ["peer", "colleague", "coworker"],
+
+  // Career events
+  "promotion": ["advance", "advancement", "step up", "promoted", "move up"],
+  "promoted": ["promotion", "advance", "step up"],
+  "raise": ["pay rise", "pay raise", "salary increase", "bump", "comp"],
+  "appraisal": ["review", "feedback", "evaluation", "performance review"],
+  "review": ["appraisal", "feedback", "evaluation"],
+  "feedback": ["critique", "review", "appraisal", "evaluation"],
+  "transition": ["change", "shift", "move", "switch"],
+  "leave": ["resign", "quit", "exit", "move on"],
+  "quit": ["resign", "leave", "exit"],
+  "resign": ["quit", "leave", "exit"],
+
+  // States / conditions
+  "stuck": ["blocked", "stalled", "plateaued", "stagnant", "frustrated"],
+  "blocked": ["stuck", "stalled", "stopped"],
+  "overwhelmed": ["drowning", "swamped", "burned out", "burnout", "exhausted"],
+  "drowning": ["overwhelmed", "swamped"],
+  "swamped": ["overwhelmed", "drowning"],
+  "burnout": ["burned out", "overwhelmed", "exhausted"],
+  "passed over": ["overlooked", "missed out", "skipped"],
+  "overlooked": ["passed over", "missed out", "ignored"],
+
+  // Decisions / choices
+  "options": ["choice", "choices", "decision", "alternatives", "paths", "should i", "considering", "decide"],
+  "choice": ["options", "decision", "alternatives", "paths"],
+  "decision": ["options", "choice", "decide", "deciding"],
+  "decide": ["decision", "choose", "deciding", "options"],
+  "considering": ["thinking about", "weighing", "options"],
+
+  // Communication
+  "email": ["message", "note", "memo"],
+  "message": ["email", "note", "memo"],
+  "1:1": ["one on one", "one-on-one", "check-in"],
+  "one-on-one": ["1:1", "one on one"],
+  "one on one": ["1:1", "one-on-one"],
+  "meeting": ["session", "discussion", "catch-up"],
+  "update": ["status", "report", "briefing", "summary"],
+  "status": ["update", "report", "briefing"],
+
+  // Visibility / impact
+  "visibility": ["recognition", "seen", "noticed", "credit", "exposure"],
+  "recognition": ["visibility", "credit", "noticed", "appreciated"],
+  "influence": ["sway", "persuade", "convince"],
+  "credibility": ["trust", "respect", "reputation"],
+  "impact": ["value", "outcome", "result", "contribution"],
+  "value": ["impact", "contribution", "outcome"],
+  "contribute": ["add value", "impact", "contribution"],
+
+  // Goals / planning
+  "goal": ["milestone", "target", "objective", "ambition"],
+  "milestone": ["goal", "target", "objective"],
+  "target": ["goal", "milestone", "objective"],
+  "vision": ["goal", "ambition", "aim"],
+  "plan": ["roadmap", "action plan", "strategy"],
+  "strategy": ["plan", "approach", "direction"],
+  "priority": ["focus", "top priority", "important", "matters"],
+
+  // Work events
+  "project": ["initiative", "assignment", "work"],
+  "initiative": ["project", "program", "effort"],
+  "task": ["work", "assignment", "to-do"],
+  "ask": ["pitch", "request", "proposal", "case"],
+  "pitch": ["ask", "request", "proposal"],
+  "request": ["ask", "pitch", "proposal"],
+  "reorg": ["restructure", "reorganisation", "reorganization", "shake up"],
+  "restructure": ["reorg", "reorganisation"],
+
+  // Difficulty
+  "difficult": ["hard", "tough", "challenging", "tricky"],
+  "tough": ["hard", "difficult", "challenging"],
+  "hard": ["difficult", "tough", "challenging"],
+  "conflict": ["disagreement", "pushback", "tension", "dispute"],
+  "pushback": ["conflict", "resistance", "disagreement"],
+  "criticism": ["critical feedback", "negative feedback"],
+  "fear": ["worry", "anxiety", "scared", "afraid"],
+  "worry": ["fear", "anxiety", "concern", "stress"],
+
+  // Beginnings
+  "new": ["starting", "joining", "beginning", "fresh", "first"],
+  "first": ["new", "starting", "beginning"],
+  "starting": ["new", "joining", "beginning"],
+  "joining": ["new", "starting"],
+  "onboarding": ["joining", "starting", "new role"],
+
+  // Generic career
+  "career": ["job", "role", "professional"],
+  "role": ["career", "job", "position"],
+  "job": ["role", "career", "position"],
+  "mindset": ["attitude", "outlook", "approach"],
+  "owner": ["ownership", "agency"],
+};
+
+// === RENDER ===
+function escape(s) { return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
+function tokenize(q) { return q.toLowerCase().trim().split(/\s+/).filter(w => w.length > 0); }
+function expandToken(token) {
+  const set = new Set([token]);
+  const syns = SYNONYMS[token];
+  if (syns) syns.forEach(s => set.add(s.toLowerCase()));
+  return set;
+}
+function getHighlightTerms(q) {
+  if (!q) return [];
+  const terms = new Set();
+  const ql = q.toLowerCase().trim();
+  expandToken(ql).forEach(t => terms.add(t));
+  const tokens = tokenize(ql);
+  if (tokens.length > 1) {
+    for (const token of tokens) expandToken(token).forEach(t => terms.add(t));
+  }
+  return Array.from(terms).filter(t => t.length >= 2);
+}
+function highlight(text, q) {
+  if (!q) return escape(text);
+  const terms = getHighlightTerms(q);
+  if (terms.length === 0) return escape(text);
+  terms.sort((a, b) => b.length - a.length);
+  const pattern = terms.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
+  const escaped = escape(text);
+  return escaped.replace(new RegExp(`(${pattern})`, 'gi'), '<span class="hl">$1</span>');
+}
+function matches(situation, q) {
+  if (!q) return true;
+  const ql = q.toLowerCase().trim();
+  if (!ql) return true;
+
+  // Build haystack from situation text + all linked tools
+  let haystack = situation.text.toLowerCase();
+  for (const tk of situation.tools) {
+    const t = TOOLS[tk];
+    haystack += " " + t.name.toLowerCase() + " " + t.desc.toLowerCase() + " m" + t.module + " module " + t.module + " " + t.page.toLowerCase();
+  }
+
+  // First — full query (and its direct synonyms) as a single phrase
+  const fullSyns = expandToken(ql);
+  for (const s of fullSyns) {
+    if (haystack.includes(s)) return true;
+  }
+
+  // Multi-word — ALL tokens must have at least one synonym in the haystack
+  const tokens = tokenize(ql);
+  if (tokens.length <= 1) return false;
+  for (const token of tokens) {
+    const syns = expandToken(token);
+    let found = false;
+    for (const syn of syns) {
+      if (haystack.includes(syn)) { found = true; break; }
+    }
+    if (!found) return false;
+  }
+  return true;
+}
+function render() {
+  const root = document.getElementById('results');
+  root.innerHTML = '';
+  const q = state.query.trim();
+  const sec = state.section;
+  let total = 0;
+  for (const [secId, secMeta] of Object.entries(SECTIONS)) {
+    if (sec !== 'all' && sec !== secId) continue;
+    const cards = SITUATIONS.filter(s => s.section == secId && matches(s, q));
+    if (cards.length === 0) continue;
+    total += cards.length;
+    const sectionEl = document.createElement('div');
+    sectionEl.className = 'section';
+    sectionEl.style.setProperty('--section-color', secMeta.color);
+    sectionEl.innerHTML = `
+      <div class="section-header" style="--section-color:${secMeta.color};">
+        <div class="section-title">${secId}.  ${secMeta.title}</div>
+        <div class="section-desc">${secMeta.desc}</div>
+      </div>
+    `;
+    cards.forEach(c => {
+      const cardEl = document.createElement('div');
+      cardEl.className = 'card';
+      cardEl.style.setProperty('--section-color', secMeta.color);
+      const toolBlocks = c.tools.map(tk => {
+        const t = TOOLS[tk];
+        return `
+          <div class="tool-block">
+            <div class="tool-name">${highlight(t.name, q)}</div>
+            <div class="tool-desc">${highlight(t.desc, q)}</div>
+            <span class="cta">Open in HPB Module ${t.module} · ${t.page} <span class="arrow">→</span></span>
+          </div>
+        `;
+      }).join('');
+      cardEl.innerHTML = `
+        <div class="situation">${highlight(c.text, q)}</div>
+        ${toolBlocks}
+      `;
+      sectionEl.appendChild(cardEl);
+    });
+    root.appendChild(sectionEl);
+  }
+  const meta = document.getElementById('search-meta');
+  const noResults = document.getElementById('no-results');
+  if (total === 0) {
+    noResults.classList.add('visible');
+    meta.textContent = q ? `No matches for "${q}".` : 'No matches.';
+  } else {
+    noResults.classList.remove('visible');
+    if (q || sec !== 'all') {
+      const secName = sec === 'all' ? 'across all 5 sections' : `in ${SECTIONS[sec].title}`;
+      meta.textContent = `${total} ${total === 1 ? 'situation' : 'situations'} ${q ? `matching "${q}" ` : ''}${secName}.`;
+    } else {
+      meta.textContent = `45 situations across 5 sections.`;
+    }
+  }
+}
+
+// === EVENTS ===
+document.getElementById('search').addEventListener('input', e => {
+  state.query = e.target.value;
+  document.getElementById('clear-btn').classList.toggle('visible', state.query.length > 0);
+  render();
+});
+function clearSearch() {
+  state.query = '';
+  document.getElementById('search').value = '';
+  document.getElementById('clear-btn').classList.remove('visible');
+  render();
+  document.getElementById('search').focus();
+}
+document.getElementById('chips').addEventListener('click', e => {
+  const chip = e.target.closest('.chip');
+  if (!chip) return;
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  chip.classList.add('active');
+  state.section = chip.dataset.section;
+  render();
+});
+
+render();
+</script>
+</body>
+</html>

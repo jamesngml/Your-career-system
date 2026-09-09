@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5"
+    />
+    <meta name="theme-color" content="#1B3A5C" />
+    <meta
+      name="description"
+      content="A companion to the High Performer Blueprint. Look up your career situation, find the right HPB tool, and open the module reference."
+    />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32x32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Career System" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="color-scheme" content="light" />
+
+    <title>Your Career System — HPB Reference</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>Your Career System needs JavaScript enabled to run.</noscript>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // Friendly fallback if the app never mounts — almost always because the
+      // page was opened directly from disk (file://) instead of being served
+      // over http. ES module scripts and absolute asset paths do not work from
+      // file://; the app must be served.
+      window.addEventListener('load', function () {
+        setTimeout(function () {
+          var root = document.getElementById('root');
+          if (root && root.childElementCount === 0) {
+            root.innerHTML =
+              '<div style="max-width:34rem;margin:12vh auto;padding:0 1.5rem;font:16px/1.6 system-ui,sans-serif;color:#2c2c2c">' +
+              '<p style="font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#6b6b6b">HPB · High Performer Blueprint</p>' +
+              '<h1 style="font-size:1.6rem;color:#1a1a1a;margin:.25rem 0 1rem">Your Career System</h1>' +
+              '<p style="padding:1rem 1.25rem;background:#F8FAFC;border-left:5px solid #FFE599;border-radius:0 10px 10px 0">' +
+              'This app has to be <strong>served over http</strong> — it will not run when the HTML file is opened directly from disk.</p>' +
+              '<p style="margin-top:1rem">In the project folder run one of:</p>' +
+              '<pre style="background:#1B3A5C;color:#FFE599;padding:.9rem 1rem;border-radius:8px;overflow:auto">npm run dev      # development\nnpm run preview  # production build (run npm run build first)</pre>' +
+              '<p>then open the <code>http://localhost:…</code> URL it prints.</p>' +
+              '</div>';
+          }
+        }, 2500);
+      });
+    </script>
+  </body>
+</html>
